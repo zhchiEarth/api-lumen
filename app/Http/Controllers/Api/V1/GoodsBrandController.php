@@ -22,17 +22,9 @@ class GoodsBrandController extends ApiController
         return $this->response->paginator($posts, new GoodsBrandTransformer());
     }
 
-    public function update($id, Request $request)
+    public function update(Request $request, GoodsBrand $goodsBrand)
     {
-        $goodsBrand = $this->goodsBrand->find($id);
-
-        if (! $goodsBrand) {
-            return $this->response->errorNotFound();
-        }
-
-
-
-        $validator = \Validator::make($request->input(), [
+        $validator = \Validator::make($request->all(), [
             'title' => 'required|string|max:50',
             'content' => 'required|string',
         ]);
@@ -41,7 +33,7 @@ class GoodsBrandController extends ApiController
             return $this->errorBadRequest($validator);
         }
 
-        $goodsBrand->update($request->only('brand_name', 'telephone', 'brand_web', 'brand_logo', 'brand_desc', 'status', 'weight'));
+        $goodsBrand->save($request->only('brand_name', 'telephone', 'brand_web', 'brand_logo', 'brand_desc', 'status', 'weight'));
 
         return $this->response->noContent();
     }

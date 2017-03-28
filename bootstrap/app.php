@@ -62,6 +62,12 @@ $app->singleton(
 // $app->middleware([
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
+//
+$app->middleware([
+    'cors' => palanik\lumen\Middleware\LumenCors::class,
+    // 根据 accept-language 设置语言
+    // 'locale' => App\Http\Middleware\ChangeLocale::class,
+]);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
@@ -77,6 +83,10 @@ $app->routeMiddleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
+
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(App\Providers\EventServiceProvider::class);
 
 // dingo/api
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
@@ -94,9 +104,7 @@ app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
 // });
 
 
-// $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+
 
 /*
 |--------------------------------------------------------------------------

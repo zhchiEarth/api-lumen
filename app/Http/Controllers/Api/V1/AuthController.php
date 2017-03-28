@@ -16,14 +16,14 @@ class AuthController
 
     public function store(Request $request)
     {
-        // $validator = \Validator::make($request->all(), [
-        //     'name' => 'required',
-        //     'password' => 'required',
-        // ]);
+        $validator = \Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
 
-        // if ($validator->fails()) {
-        //     return $this->errorBadRequest($validator);
-        // }
+        if ($validator->fails()) {
+            return $this->errorBadRequest($validator);
+        }
 
         $credentials = $request->only('email', 'password');
         // 验证失败返回403
