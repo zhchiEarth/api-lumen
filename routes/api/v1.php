@@ -13,6 +13,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
     $api->get('/goodsBrands', 'GoodsBrandController@index');
     $api->post('/goodsBrands', 'GoodsBrandController@store');
     $api->put('/goodsBrands/{id}', 'GoodsBrandController@update');
+    $api->patch('/goodsBrands/{id}', 'GoodsBrandController@status');
 
 
 });

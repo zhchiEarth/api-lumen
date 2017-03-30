@@ -11,6 +11,8 @@ class User extends BaseModel implements AuthenticatableContract, JWTSubject
 {
     use Authenticatable;
 
+    protected $primaryKey = 'user_id';
+
     /**
      * The attributes that are mass assignable.
      *

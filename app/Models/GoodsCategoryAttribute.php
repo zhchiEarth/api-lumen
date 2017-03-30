@@ -11,5 +11,6 @@ namespace App\Models;
 
 class GoodsCategoryAttribute extends BaseModel
 {
+    protected $primaryKey  = 'attr_id';
     protected $fillable = ['category_id', 'attr_name'];
 }
