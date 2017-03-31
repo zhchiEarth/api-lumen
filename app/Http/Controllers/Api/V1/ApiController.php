@@ -31,7 +31,6 @@ class ApiController extends Controller
                 }
             }
         }
-
         throw new ValidationHttpException($result);
     }
 }

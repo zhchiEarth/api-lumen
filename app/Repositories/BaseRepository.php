@@ -4,15 +4,6 @@ namespace App\Repositories;
 
 trait BaseRepository
 {
-    /**
-     * Get number of records
-     *
-     * @return array
-     */
-    public function getNumber()
-    {
-        return $this->model->count();
-    }
 
     /**
      * Update columns in the record by id.
@@ -71,9 +62,29 @@ trait BaseRepository
      * @param  string $sortColumn
      * @return Paginate
      */
-    public function page($number = 10, $sort = 'desc', $sortColumn = 'created_at')
+    public function page($input, $number = 15, $sort = 'desc', $sortColumn = 'created_at')
     {
+        $this->model = $this->whereByColumns($input);
         return $this->model->orderBy($sortColumn, $sort)->paginate($number);
+    }
+
+    public function whereByColumns($input)
+    {
+
+        if (!empty($input)) {
+            foreach ($input as $key=>$value) {
+                if ($value == null || $value == '') {
+                    continue;
+                }
+                if (array_key_exists($key, $this->columns)) {
+                    $this->model = $this->model->where($key, $this->columns[$key]['operator'], str_replace('@', $value, $this->columns[$key]['value']));
+                } else {
+                    dd($value);
+                    $this->model = $this->model->where($key, $value);
+                }
+            }
+        }
+        return $this->model;
     }
 
     /**

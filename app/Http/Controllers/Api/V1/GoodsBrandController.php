@@ -15,9 +15,9 @@ class GoodsBrandController extends ApiController
         $this->goodsBrand = $goodsBrand;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $goodsBrand = $this->goodsBrand->page();
+        $goodsBrand = $this->goodsBrand->page($request->only('brand_name'));
 
         return $this->response->paginator($goodsBrand, new GoodsBrandTransformer());
     }
@@ -39,11 +39,16 @@ class GoodsBrandController extends ApiController
 
     public function status(Request $request, $id)
     {
-        $input = $request->all();
         $input = $request->only('status');
 
-        dd($input);
         $this->goodsBrand->updateColumn($id, $input);
+
+        return $this->response->noContent();
+    }
+
+    public function destroy($id)
+    {
+        $this->goodsBrand->destroy($id);
 
         return $this->response->noContent();
     }
