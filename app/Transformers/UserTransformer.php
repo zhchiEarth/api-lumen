@@ -10,17 +10,15 @@ class UserTransformer extends TransformerAbstract
     public function transform(User $user)
     {
         return [
-            'id' => $user->id,
-            'avatar' => $user->avatar,
-            'name' => $user->name,
-            // 'status' => $user->status,
-            // 'email' => $user->email,
-            'nickname' => $user->nickname,
-            // 'is_admin' => $user->is_admin,
-            // 'github_name' => $user->github_name,
-            // 'website' => $user->website,
-            // 'description' => $user->description,
-            'created_at' => $user->created_at->toDateTimeString(),
+            'user_id'      => $user->id,
+            'mobile_phone' => $user->mobile_phone,
+            'email'        => $user->email,
+            'nickname'     => $user->nickname,
+            'avatar'       => $user->avatar,
+            'gender'       => $user->gender,
+            'status'       => $user->status,
+            'created_at'   => $user->created_at,
+            'updated_at'   => $user->updated_at
         ];
     }
 }

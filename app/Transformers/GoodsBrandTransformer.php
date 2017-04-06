@@ -18,7 +18,7 @@ class GoodsBrandTransformer extends TransformerAbstract
             'brand_desc' => $goodsBrand->brand_desc,
             'status'     => $goodsBrand->status ? true : false,
             'weight'     => $goodsBrand->weight,
-//            'created_at' => $goodsBrand->created_at,
+            'created_at' => $goodsBrand->created_at ? $goodsBrand->created_at->toDateTimeString : '',
         ];
     }
 }

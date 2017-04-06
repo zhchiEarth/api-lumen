@@ -79,7 +79,6 @@ trait BaseRepository
                 if (array_key_exists($key, $this->columns)) {
                     $this->model = $this->model->where($key, $this->columns[$key]['operator'], str_replace('@', $value, $this->columns[$key]['value']));
                 } else {
-                    dd($value);
                     $this->model = $this->model->where($key, $value);
                 }
             }

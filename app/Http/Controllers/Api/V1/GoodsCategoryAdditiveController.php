@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
-use App\Repositories\GoodsCategoryRepository;
-use App\Transformers\GoodsCategoryTransformer;
+use App\Repositories\GoodsCategoryAdditiveRepository;
+use App\Transformers\GoodsCategoryAdditiveTransformer;
 
-class GoodsCategoryController extends ApiController
+class GoodsCategoryAdditiveController extends ApiController
 {
-    protected $goodsCategory;
+    protected $goodsCategoryAdditive;
 
-    public function __construct(GoodsCategoryRepository $goodsCategory)
+    public function __construct(GoodsCategoryAdditiveRepository $goodsCategoryAdditive)
     {
-        $this->goodsCategory = $goodsCategory;
+        $this->goodsCategoryAdditive = $goodsCategoryAdditive;
     }
 
     /**
@@ -20,11 +20,13 @@ class GoodsCategoryController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $categoryId)
     {
-        $goodsCategory = $this->goodsCategory->page($request->only('category_name', 'level'));
+        $data = $request->only('additive_name');
+        $data['category_id'] = $categoryId;
+        $goodsCategoryAdditive = $this->goodsCategoryAdditive->page($data);
 
-        return $this->response->paginator($goodsCategory, new GoodsCategoryTransformer());
+        return $this->response->paginator($goodsCategoryAdditive, new GoodsCategoryAdditiveTransformer());
     }
 
     /**
@@ -46,7 +48,8 @@ class GoodsCategoryController extends ApiController
     public function store(Request $request)
     {
         $this->valid($request);
-        $this->goodsCategory->store($request->only('category_name', 'category_code', 'category_logo', 'parent_id', 'level', 'status', 'weight'));
+        $data = $request->only('category_id', 'additive_name');
+        $this->goodsCategoryAdditive->store($data);
         return $this->response->noContent();
     }
 
@@ -74,9 +77,9 @@ class GoodsCategoryController extends ApiController
 
     public function status(Request $request, $id)
     {
-        $input = $request->only('status');
+        $input = $request->only('additive_name');
 
-        $this->goodsCategory->updateColumn($id, $input);
+        $this->goodsCategoryAdditive->updateColumn($id, $input);
 
         return $this->response->noContent();
     }
@@ -90,10 +93,9 @@ class GoodsCategoryController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        dd($request->only('level'));
         $this->valid($request);
-        $data = $request->only('category_name', 'category_code', 'category_logo', 'parent_id', 'level', 'status', 'weight');
-        $this->goodsCategory->update($id, $data);
+        $data = $request->only('additive_name');
+        $this->goodsCategoryAdditive->update($id, $data);
         return $this->response->noContent();
     }
 
@@ -105,7 +107,7 @@ class GoodsCategoryController extends ApiController
      */
     public function destroy($id)
     {
-        $this->goodsCategory->destroy($id);
+        $this->goodsCategoryAdditive->destroy($id);
 
         return $this->response->noContent();
     }
@@ -113,13 +115,7 @@ class GoodsCategoryController extends ApiController
     public function valid(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'category_name' => 'required',
-            'category_code' => 'required',
-            'category_logo' => 'required',
-            'parent_id' => 'required',
-            'level' => 'required|min:1|max:2',
-            'status' => 'required|min:0|max:1',
-            'weight' => 'required',
+            'additive_name' => 'required'
         ]);
 
         if ($validator->fails()) {
