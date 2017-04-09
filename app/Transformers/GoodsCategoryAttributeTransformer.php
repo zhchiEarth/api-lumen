@@ -8,7 +8,7 @@ use League\Fractal\TransformerAbstract;
 class GoodsCategoryAttributeTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
-        'category',
+        'specs',
     ];
 
     public function transform(GoodsCategoryAttribute $goodsCategoryAttribute)
@@ -22,10 +22,10 @@ class GoodsCategoryAttributeTransformer extends TransformerAbstract
         ];
     }
 
-    public function includeCategory(GoodsCategoryAttribute $goodsCategoryAttribute)
+    public function includeSpecs(GoodsCategoryAttribute $goodsCategoryAttribute)
     {
-        $category = $goodsCategoryAttribute->category;
+        $specs = $goodsCategoryAttribute->specs;
 
-        return $this->item($category, new GoodsCategoryTransformer());
+        return $this->collection($specs, new GoodsCategorySpecTransformer);
     }
 }

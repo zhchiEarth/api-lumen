@@ -9,6 +9,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         'uses' => 'AuthController@store',
     ]);
 
+    //商品管理
+    $api->get('/goods', 'GoodsController@index');
+    $api->post('/goods', 'GoodsController@store');
+    $api->put('/goods/{id}', 'GoodsController@update');
+    $api->patch('/goods/{id}', 'GoodsController@status');
+    $api->delete('/goods/{id}', 'GoodsController@destroy');
+
     //品牌
     $api->get('/goodsBrands', 'GoodsBrandController@index');
     $api->post('/goodsBrands', 'GoodsBrandController@store');

@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Models\GoodsCategory;
 use League\Fractal\TransformerAbstract;
+use League\Fractal\ParamBag;
 
 class GoodsCategoryTransformer extends TransformerAbstract
 {
@@ -11,6 +12,7 @@ class GoodsCategoryTransformer extends TransformerAbstract
 //        'tags',
 //        'category',
 //    ];
+
 
     public function transform(GoodsCategory $category)
     {
@@ -24,7 +26,9 @@ class GoodsCategoryTransformer extends TransformerAbstract
             'status' => $category->status ? true : false,
             'weight' => $category->weight,
             'created_at' => $category->created_at,
-            'updated_at' => $category->updated_at
+            'updated_at' => $category->updated_at,
+            'label' => $category->category_name,
+            'cities' => []
         ];
     }
     /**

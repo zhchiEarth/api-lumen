@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
-use App\Repositories\GoodsCategoryRepository;
-use App\Transformers\GoodsCategoryTransformer;
+use App\Repositories\GoodsRepository;
+use App\Transformers\GoodsTransformer;
 
-class GoodsCategoryController extends ApiController
+class GoodsController extends ApiController
 {
-    protected $goodsCategory;
+    protected $goods;
 
-    public function __construct(GoodsCategoryRepository $goodsCategory)
+    public function __construct(GoodsRepository $goods)
     {
-        $this->goodsCategory = $goodsCategory;
+        $this->goods = $goods;
     }
 
     /**
@@ -22,9 +22,10 @@ class GoodsCategoryController extends ApiController
      */
     public function index(Request $request)
     {
-        $goodsCategory = $this->goodsCategory->page($request->only('category_name', 'level', 'parent_id'));
+        $data = $request->only('goods_name');
+        $goods = $this->goods->page($data);
 
-        return $this->response->paginator($goodsCategory, new GoodsCategoryTransformer);
+        return $this->response->paginator($goods, new GoodsTransformer);
     }
 
     /**
@@ -46,7 +47,8 @@ class GoodsCategoryController extends ApiController
     public function store(Request $request)
     {
         $this->valid($request);
-        $this->goodsCategory->store($request->only('category_name', 'category_code', 'category_logo', 'parent_id', 'level', 'status', 'weight'));
+        $data = $request->only('goods_code', 'user_id', 'one_category_id', 'two_category_id', 'brand_id', 'price', 'audit_status', 'sale_count', 'view_count', 'comment_count');
+        $this->goods->store($data);
         return $this->response->noContent();
     }
 
@@ -74,9 +76,9 @@ class GoodsCategoryController extends ApiController
 
     public function status(Request $request, $id)
     {
-        $input = $request->only('status');
+        $input = $request->only('additive_name');
 
-        $this->goodsCategory->updateColumn($id, $input);
+        $this->goods->updateColumn($id, $input);
 
         return $this->response->noContent();
     }
@@ -91,8 +93,9 @@ class GoodsCategoryController extends ApiController
     public function update(Request $request, $id)
     {
         $this->valid($request);
-        $data = $request->only('category_name', 'category_code', 'category_logo', 'parent_id', 'level', 'status', 'weight');
-        $this->goodsCategory->update($id, $data);
+        $data = $request->only('goods_code', 'user_id', 'one_category_id', 'two_category_id', 'brand_id', 'price', 'audit_status', 'sale_count', 'view_count', 'comment_count');
+
+        $this->goods->update($id, $data);
         return $this->response->noContent();
     }
 
@@ -104,7 +107,7 @@ class GoodsCategoryController extends ApiController
      */
     public function destroy($id)
     {
-        $this->goodsCategory->destroy($id);
+        $this->goods->destroy($id);
 
         return $this->response->noContent();
     }
@@ -112,13 +115,17 @@ class GoodsCategoryController extends ApiController
     public function valid(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'category_name' => 'required',
-            'category_code' => 'required',
-            'category_logo' => 'required',
-            'parent_id' => 'required',
-            'level' => 'required|min:1|max:2',
-            'status' => 'required|min:0|max:1',
-            'weight' => 'required',
+            'goods_code'      => 'required',
+            'user_id'         => 'required',
+            'goods_name'      => 'required',
+            'one_category_id' => 'required',
+            'two_category_id' => 'required',
+            'brand_id'        => 'required',
+            'price'           => 'required',
+            'audit_status'    => 'required',
+            'sale_count'      => 'required',
+            'view_count'      => 'required',
+            'comment_count'   => 'required'
         ]);
 
         if ($validator->fails()) {

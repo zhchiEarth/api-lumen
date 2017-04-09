@@ -8,5 +8,5 @@ class BaseModel extends Model
 {
     protected $guarded = ['updated_at'];
 
-    protected $dates = ['created_at', 'updated_at'];
+//    protected $dates = ['created_at', 'updated_at'];
 }
