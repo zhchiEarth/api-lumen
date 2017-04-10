@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use Illuminate\Http\Request;
 use App\Models\GoodsCategorySpec;
 use League\Fractal\TransformerAbstract;
 
@@ -9,6 +10,7 @@ class GoodsCategorySpecTransformer extends TransformerAbstract
 {
     public function transform(GoodsCategorySpec $goodsCategorySpec)
     {
+        // return $goodsCategorySpec->attributesToArray();
         return [
             'spec_id'         => $goodsCategorySpec->spec_id,
             'attr_id'         => $goodsCategorySpec->attr_id,

@@ -70,7 +70,6 @@ trait BaseRepository
 
     public function whereByColumns($input)
     {
-
         if (!empty($input)) {
             foreach ($input as $key=>$value) {
                 if ($value == null || $value == '') {

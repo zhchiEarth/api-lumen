@@ -4,7 +4,6 @@ namespace App\Transformers;
 
 use App\Models\GoodsCategory;
 use League\Fractal\TransformerAbstract;
-use League\Fractal\ParamBag;
 
 class GoodsCategoryTransformer extends TransformerAbstract
 {
