@@ -27,7 +27,7 @@ class GoodsCategoryTransformer extends TransformerAbstract
             'created_at' => $category->created_at,
             'updated_at' => $category->updated_at,
             'label' => $category->category_name,
-            'cities' => []
+//            'children' => []
         ];
     }
     /**
