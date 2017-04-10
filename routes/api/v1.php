@@ -46,9 +46,9 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
     $api->delete('/goodsCategories/{category_id}/attributes/{id}', 'GoodsCategoryAttributeController@destroy');
 
     //属性值
-    $api->get('/goodsAttributes/{attr_id}/specs', 'GoodsCategoryAttributeController@index');
-    $api->post('/goodsAttributes/{attr_id}/specs', 'GoodsCategoryAttributeController@store');
-    $api->put('/goodsAttributes/{attr_id}/specs/{id}', 'GoodsCategoryAttributeController@update');
+    $api->get('/goodsAttributes/{attr_id}/specs', 'GoodsCategorySpecController@index');
+    $api->post('/goodsAttributes/{attr_id}/specs', 'GoodsCategorySpecController@store');
+    $api->put('/goodsAttributes/{attr_id}/specs/{id}', 'GoodsCategorySpecController@update');
 //    $api->patch('/goodsCategoryAdditives/{id}', 'GoodsCategoryAdditiveController@status');
-    $api->delete('/goodsAttributes/{attr_id}/specs/{id}', 'GoodsCategoryAttributeController@destroy');
+    $api->delete('/goodsAttributes/{attr_id}/specs/{id}', 'GoodsCategorySpecController@destroy');
 });

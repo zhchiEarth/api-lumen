@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\GoodsCategorySpecRepository;
 use App\Transformers\GoodsCategorySpecTransformer;
 
-class GoodsCategorySpecController
+class GoodsCategorySpecController extends ApiController
 {
     protected $goodsCategorySpec;
 
@@ -46,7 +46,7 @@ class GoodsCategorySpecController
     public function store(Request $request)
     {
         $this->valid($request);
-        $data = $request->only('attr_id', 'attribute_value');
+        $data = $request->only('attribute_value', 'attr_id');
         $this->goodsCategorySpec->store($data);
         return $this->response->noContent();
     }
