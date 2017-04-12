@@ -49,9 +49,10 @@ trait BaseRepository
      *
      * @return array User
      */
-    public function all()
+    public function all($input, $sort = 'desc', $sortColumn = 'created_at')
     {
-        return $this->model->get();
+        $this->model = $this->whereByColumns($input);
+        return $this->model->orderBy($sortColumn, $sort)->get();
     }
 
     /**
