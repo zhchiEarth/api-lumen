@@ -19,7 +19,7 @@ class GoodsBrandController extends ApiController
     {
         $goodsBrand = $this->goodsBrand->page($request->only('brand_name'));
 
-        return $this->response->paginator($goodsBrand, new GoodsBrandTransformer());
+        return $this->response->paginator($goodsBrand, new GoodsBrandTransformer);
     }
 
     public function store(Request $request)

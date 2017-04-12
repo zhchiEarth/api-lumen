@@ -47,7 +47,11 @@ class GoodsController extends ApiController
     public function store(Request $request)
     {
         $this->valid($request);
-        $data = $request->only('goods_code', 'user_id', 'one_category_id', 'two_category_id', 'brand_id', 'price', 'audit_status', 'sale_count', 'view_count', 'comment_count');
+        $data = $request->only('user_id', 'goods_name', 'one_category_id', 'two_category_id', 'brand_id', 'price', 'audit_status');
+        $data['goods_code'] = $request->input('goods_code', 0);
+        $data['sale_count'] = $request->input('sale_count', 0);
+        $data['view_count'] = $request->input('view_count', 0);
+        $data['comment_count'] = $request->input('comment_count', 0);
         $this->goods->store($data);
         return $this->response->noContent();
     }
@@ -76,7 +80,7 @@ class GoodsController extends ApiController
 
     public function status(Request $request, $id)
     {
-        $input = $request->only('additive_name');
+        $input = $request->only('audit_status');
 
         $this->goods->updateColumn($id, $input);
 
@@ -93,8 +97,7 @@ class GoodsController extends ApiController
     public function update(Request $request, $id)
     {
         $this->valid($request);
-        $data = $request->only('goods_code', 'user_id', 'one_category_id', 'two_category_id', 'brand_id', 'price', 'audit_status', 'sale_count', 'view_count', 'comment_count');
-
+        $data = $request->only('goods_code', 'goods_name', 'user_id', 'one_category_id', 'two_category_id', 'brand_id', 'price', 'audit_status', 'sale_count', 'view_count', 'comment_count');
         $this->goods->update($id, $data);
         return $this->response->noContent();
     }
@@ -115,17 +118,13 @@ class GoodsController extends ApiController
     public function valid(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'goods_code'      => 'required',
             'user_id'         => 'required',
             'goods_name'      => 'required',
             'one_category_id' => 'required',
             'two_category_id' => 'required',
             'brand_id'        => 'required',
             'price'           => 'required',
-            'audit_status'    => 'required',
-            'sale_count'      => 'required',
-            'view_count'      => 'required',
-            'comment_count'   => 'required'
+            'audit_status'    => 'required'
         ]);
 
         if ($validator->fails()) {
