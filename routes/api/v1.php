@@ -51,4 +51,6 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
     $api->put('/goodsAttributes/{attr_id}/specs/{id}', 'GoodsCategorySpecController@update');
 //    $api->patch('/goodsCategoryAdditives/{id}', 'GoodsCategoryAdditiveController@status');
     $api->delete('/goodsAttributes/{attr_id}/specs/{id}', 'GoodsCategorySpecController@destroy');
+	
+	$api->post('/file', 'UploadController@uploadFile');
 });

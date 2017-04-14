@@ -35,7 +35,7 @@ class UserController
         $user = User::create($attributes);
 
         // 201 with location
-        // $location = dingo_route('v1', 'users.show', $user->id);
+         $location = dingo_route('v1', 'users.show', $user->id);
 
         $result = [
             'token' => \Auth::fromUser($user),

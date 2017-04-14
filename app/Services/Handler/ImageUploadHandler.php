@@ -2,10 +2,9 @@
 
 namespace App\Services\Handler;
 
-use Image;
-use Auth;
 use App\Services\Handler\Exception\ImageUploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ImageUploadHandler
 {
@@ -13,33 +12,30 @@ class ImageUploadHandler
      * @var UploadedFile $file
      */
     protected $file;
-    protected $allowed_extensions = ["png", "jpg", "gif", 'jpeg'];
-	
-	/**
-     * @param UploadedFile $file
-     * @param User $user
-     * @return array
-     */
-    public function uploadAvatar($file, User $user)
+    protected $allowed_extensions = ["png", "jpg", 'jpeg'];
+    
+    protected $width;
+    
+    protected $height;
+
+    public function uploadImage($file, $type)
     {
         $this->file = $file;
+        $this->setImageSize($type);
         $this->checkAllowedExtensionsOrFail();
-
-        $avatar_name = $user->id . '_' . time() . '.' . $file->getClientOriginalExtension() ?: 'png';
-        $this->saveImageToLocal('avatar', 380, $avatar_name);
-
-        return ['filename' => $avatar_name];
+	    return $this->saveImageToLocal($type);
     }
-
-    public function uploadImage($file)
+    
+    private function setImageSize($type)
     {
-        $this->file = $file;
-        $this->checkAllowedExtensionsOrFail();
-
-        $local_image = $this->saveImageToLocal('topic', 1440);
-        return ['filename' => get_user_static_domain() . $local_image];
+	    switch ($type){
+		    case  'categories':
+		    	$this->width = 520;
+		    	$this->height = 520;
+		    	break;
+	    }
     }
-
+    
     protected function checkAllowedExtensionsOrFail()
     {
         $extension = strtolower($this->file->getClientOriginalExtension());
@@ -48,25 +44,27 @@ class ImageUploadHandler
         }
     }
 
-    protected function saveImageToLocal($type, $resize, $filename = '')
+    protected function saveImageToLocal($type)
     {
-        $folderName = ($type == 'avatar')
-            ? 'uploads/avatars'
-            : 'uploads/images/' . date("Ym", time()) .'/'.date("d", time()) .'/'. Auth::user()->id;
+        $folderName = 'uploads/' .$type. '/' . date("Ym", time()) .'/'.date("d", time()) .'/';
 
-        $destinationPath = public_path() . '/' . $folderName;
+        $destinationPath = public_path() . $folderName;
         $extension = $this->file->getClientOriginalExtension() ?: 'png';
-        $safeName  = $filename ? :str_random(10) . '.' . $extension;
+        $safeName  = str_random(32) . '.' . $extension;
         $this->file->move($destinationPath, $safeName);
 
-        if ($this->file->getClientOriginalExtension() != 'gif') {
-            $img = Image::make($destinationPath . '/' . $safeName);
-            $img->resize($resize, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-            $img->save();
-        }
+        $img = Image::make($destinationPath . '/' . $safeName);
+        $img->resize($this->width, $this->height, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $img->save();
+        
         return $folderName .'/'. $safeName;
+    }
+    
+    public function deleteImage()
+    {
+    	
     }
 }
