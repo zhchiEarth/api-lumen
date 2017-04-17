@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 use App\Repositories\GoodsRepository;
 use App\Transformers\GoodsTransformer;
+use Illuminate\Support\Facades\DB;
 
 class GoodsController extends ApiController
 {
@@ -46,14 +47,32 @@ class GoodsController extends ApiController
      */
     public function store(Request $request)
     {
+//        $goodsAttributes = $request->input('goodsAttributes');
+//        dd(json_decode($goodsAttributes));
         $this->valid($request);
-        $data = $request->only('user_id', 'goods_name', 'one_category_id', 'two_category_id', 'brand_id', 'price', 'audit_status');
+        $data = $request->only('goods_name', 'one_category_id', 'two_category_id', 'brand_id', 'audit_status');
         $data['goods_code'] = $request->input('goods_code', 0);
         $data['sale_count'] = $request->input('sale_count', 0);
         $data['view_count'] = $request->input('view_count', 0);
+        $data['additives'] = $request->only('goodsAdditives');
         $data['comment_count'] = $request->input('comment_count', 0);
-        $this->goods->store($data);
+//        $this->goods->store($data);
+
+        DB::transaction(function () {
+//            $goodsId = DB::table('goods')->insertGetId($data);
+            $goodsId = DB::table('goods')->insertGetId($data);
+//            DB::table('goods_attr')->insert();
+            dd($goodsId);
+        });
         return $this->response->noContent();
+    }
+
+    private function getAttr($goodsAttributes)
+    {
+        $attributes = json_decode($goodsAttributes);
+        foreach ($attributes as $value => $val) {
+
+        }
     }
 
     /**
@@ -118,12 +137,12 @@ class GoodsController extends ApiController
     public function valid(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'user_id'         => 'required',
+//            'user_id'         => 'required',
             'goods_name'      => 'required',
             'one_category_id' => 'required',
             'two_category_id' => 'required',
             'brand_id'        => 'required',
-            'price'           => 'required',
+//            'price'           => 'required',
             'audit_status'    => 'required'
         ]);
 

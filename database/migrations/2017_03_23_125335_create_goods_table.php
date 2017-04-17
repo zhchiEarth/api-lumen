@@ -21,7 +21,8 @@ class CreateGoodsTable extends Migration
             $table->unsignedMediumInteger('one_category_id')->default(0)->comment('一级分类id');
             $table->unsignedMediumInteger('two_category_id')->default(0)->comment('二级分类id');
             $table->unsignedMediumInteger('brand_id')->default(0)->comment('品牌id');
-            $table->unsignedInteger('price')->comment('价格');
+            $table->unsignedInteger('price_min')->comment('最低价格');
+            $table->unsignedInteger('price_max')->comment('最高价格');
             $table->unsignedTinyInteger('audit_status')->default(0)->comment('0未审核,1已审核');
             $table->unsignedMediumInteger('sale_count')->default(0)->comment('销售总量');
             $table->unsignedMediumInteger('view_count')->default(0)->comment('浏览量');
