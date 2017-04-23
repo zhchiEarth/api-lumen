@@ -58,12 +58,14 @@ class GoodsController extends ApiController
         $data['comment_count'] = $request->input('comment_count', 0);
 //        $this->goods->store($data);
 
-        DB::transaction(function () {
-//            $goodsId = DB::table('goods')->insertGetId($data);
-            $goodsId = DB::table('goods')->insertGetId($data);
-//            DB::table('goods_attr')->insert();
-            dd($goodsId);
-        });
+        DB::beginTransaction();
+        $goodsId = DB::table('goods')->insertGetId($data);
+
+        if ($goodsId) {
+            DB::commit();
+        } else {
+            DB::rollBack();
+        }
         return $this->response->noContent();
     }
 

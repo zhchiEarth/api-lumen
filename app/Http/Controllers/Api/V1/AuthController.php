@@ -28,7 +28,7 @@ class AuthController
         $credentials = $request->only('email', 'password');
         // 验证失败返回403
         if (! $token = \Auth::attempt($credentials)) {
-           $this->response->errorUnauthorized('用户名或密码错误');
+           $this->response->errorUnauthorized(trans('auth.incorrect'));
         }
 
         $result['data'] = [
