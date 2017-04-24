@@ -38,13 +38,6 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
 //    $api->patch('/goodsCategoryAdditives/{id}', 'GoodsCategoryAdditiveController@status');
     $api->delete('/goodsCategories/{category_id}/additives/{id}', 'GoodsCategoryAdditiveController@destroy');
 
-    //属性
-    $api->get('/goodsCategories/{category_id}/attributes', 'GoodsCategoryAttributeController@index');
-    $api->post('/goodsCategories/{category_id}/attributes', 'GoodsCategoryAttributeController@store');
-    $api->put('/goodsCategories/{category_id}/attributes/{id}', 'GoodsCategoryAttributeController@update');
-//    $api->patch('/goodsCategoryAdditives/{id}', 'GoodsCategoryAdditiveController@status');
-    $api->delete('/goodsCategories/{category_id}/attributes/{id}', 'GoodsCategoryAttributeController@destroy');
-
     //属性值
     $api->get('/goodsAttributes/{attr_id}/specs', 'GoodsCategorySpecController@index');
     $api->post('/goodsAttributes/{attr_id}/specs', 'GoodsCategorySpecController@store');
@@ -52,5 +45,20 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
 //    $api->patch('/goodsCategoryAdditives/{id}', 'GoodsCategoryAdditiveController@status');
     $api->delete('/goodsAttributes/{attr_id}/specs/{id}', 'GoodsCategorySpecController@destroy');
 	
-	$api->post('/file', 'UploadController@uploadFile');
+	
+	$api->group(['middleware' => 'api.auth'], function ($api) {
+		$api->post('/file', 'UploadController@uploadFile');
+		
+		//属性
+		$api->get('/goodsCategories/{category_id}/attributes', 'GoodsCategoryAttributeController@index');
+		$api->post('/goodsCategories/{category_id}/attributes', 'GoodsCategoryAttributeController@store');
+		$api->put('/goodsCategories/{category_id}/attributes/{id}', 'GoodsCategoryAttributeController@update');
+//    $api->patch('/goodsCategoryAdditives/{id}', 'GoodsCategoryAdditiveController@status');
+		$api->delete('/goodsCategories/{category_id}/attributes/{id}', 'GoodsCategoryAttributeController@destroy');
+		
+		$api->get('/users', 'UserController@index');
+		$api->get('/users/{id}', 'UserController@show');
+		
+	});
+	
 });

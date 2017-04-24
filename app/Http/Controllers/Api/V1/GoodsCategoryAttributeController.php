@@ -31,7 +31,7 @@ class GoodsCategoryAttributeController extends ApiController
             $goodsCategoryAttribute = $this->goodsCategoryAttribute->all($data);
         }
 
-        return $this->response->collection($goodsCategoryAttribute, new GoodsCategoryAttributeTransformer);
+        return $this->response->collection($goodsCategoryAttribute, new GoodsCategoryAttributeTransformer, ['key' => 'user']);
     }
 
     /**
