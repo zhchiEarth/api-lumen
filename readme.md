@@ -19,8 +19,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
-
 ```shell
-docker search ubuntu
-echo "hello"
+  #docker search [镜像名称] //搜索Docker Hub(镜像仓库)上的镜像
+	docker search ubuntu
+	#NAME:名称 #DESCRIPTION:基本功能描述 #STARS:下载次数 #OFFICIAL:官方 #AUTOMATED:自动的运行
 ```
